@@ -31,4 +31,12 @@ public class TaxisController {
         return ResponseEntity.ok(taxisDto);
     }
 
+    @GetMapping("/")
+    public List<TaxisDto> getAllTaxis (
+            @RequestParam (defaultValue = "0") int page,
+            @RequestParam (defaultValue = "10") int limit) {
+        return taxisService.getAllTaxis(page, limit);
+    }
+
+
 }

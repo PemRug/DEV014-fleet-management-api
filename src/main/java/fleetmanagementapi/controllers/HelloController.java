@@ -8,7 +8,7 @@ import java.util.Map;
 
 @RestController
 public class HelloController {
-    @GetMapping("/")
+    @GetMapping("/Hello")
     public Map<String, String> foo(){
         Map<String, String> json = new HashMap<>();
         json.put("message", "Hola mundo spring boot api rest");

@@ -7,8 +7,11 @@ import fleetmanagementapi.mapper.TaxisMapper;
 import fleetmanagementapi.repository.TaxisRepository;
 import fleetmanagementapi.service.TaxisService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.awt.print.Pageable;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,4 +34,13 @@ public class TaxisServiceImpl implements TaxisService {
         List<Taxis> taxisList = taxisRepository.findAllByPlate(plate);
         return taxisList.stream().map(TaxisMapper::mapToTaxisDto).collect(Collectors.toList());
     }
+
+    @Override
+    public List<TaxisDto> getAllTaxis(int page, int limit) {
+        PageRequest pageable = PageRequest.of(page,limit);
+        Page<Taxis> taxisPage = taxisRepository.findAll(pageable);
+        return taxisPage.stream().map(TaxisMapper::mapToTaxisDto).collect(Collectors.toList());
+    }
+
+
 }

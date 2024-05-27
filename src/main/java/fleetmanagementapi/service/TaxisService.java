@@ -11,4 +11,5 @@ public interface TaxisService {
 
     TaxisDto getTaxisId(Integer taxisId);
     List<TaxisDto> getTaxisPlate(String taxisPlate);
+    List<TaxisDto> getAllTaxis(int page, int limit);
 }
