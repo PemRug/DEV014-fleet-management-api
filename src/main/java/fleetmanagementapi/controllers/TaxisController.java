@@ -1,42 +1,55 @@
 package fleetmanagementapi.controllers;
 
-import fleetmanagementapi.dto.TaxisDto;
+
+import fleetmanagementapi.entity.Taxis;
 import fleetmanagementapi.service.TaxisService;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import org.springframework.data.domain.Page;
 import java.util.List;
 
 
-@AllArgsConstructor
 @RestController
 @RequestMapping("/")
 public class TaxisController {
 
-    @Autowired
     private TaxisService taxisService;
 
-    @GetMapping("{id}")
-    public ResponseEntity<TaxisDto> getTaxisId(@PathVariable("id") Integer taxisId) {
-        TaxisDto taxisDto = taxisService.getTaxisId(taxisId);
+    @Autowired
+    public TaxisController(TaxisService taxisService) {
+        this.taxisService = taxisService;
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Taxis> getTaxisId(@PathVariable("id") Integer taxisId) {
+        Taxis taxisDto = taxisService.getTaxisId(taxisId);
         return ResponseEntity.ok(taxisDto);
     }
 
     @GetMapping("/plate/{plate}")
-    public ResponseEntity<List<TaxisDto>> getTaxisPlate(
+    public ResponseEntity<List<Taxis>> getTaxisPlate(
             @PathVariable("plate") String taxisPlate) {
-        List<TaxisDto> taxisDto = taxisService.getTaxisPlate(taxisPlate);
+        List<Taxis> taxisDto = taxisService.getTaxisPlate(taxisPlate);
         return ResponseEntity.ok(taxisDto);
     }
 
-    @GetMapping("/")
-    public List<TaxisDto> getAllTaxis (
+    @GetMapping
+    public Page<Taxis> getAllTaxis (
             @RequestParam (defaultValue = "0") int page,
             @RequestParam (defaultValue = "10") int limit) {
         return taxisService.getAllTaxis(page, limit);
     }
 
+    @GetMapping("/search")
+    public Page<Taxis> searchTaxis(@RequestParam String partialPlate,
+                                   @RequestParam (defaultValue = "0") int page,
+                                   @RequestParam (defaultValue = "10") int limit) {
+        Pageable pageable = PageRequest.of(page, limit);
+        return taxisService.findPlateContain(partialPlate, pageable);
+    }
 
 }

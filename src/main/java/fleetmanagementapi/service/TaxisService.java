@@ -1,7 +1,9 @@
 package fleetmanagementapi.service;
 
-import fleetmanagementapi.dto.TaxisDto;
-import lombok.AllArgsConstructor;
+
+import fleetmanagementapi.entity.Taxis;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,7 +11,8 @@ import java.util.List;
 @Service
 public interface TaxisService {
 
-    TaxisDto getTaxisId(Integer taxisId);
-    List<TaxisDto> getTaxisPlate(String taxisPlate);
-    List<TaxisDto> getAllTaxis(int page, int limit);
+    Taxis getTaxisId(Integer taxisId);
+    List<Taxis> getTaxisPlate(String taxisPlate);
+    Page<Taxis> getAllTaxis(int page, int limit);
+    Page<Taxis> findPlateContain(String partialPlate, Pageable pageable);
 }
