@@ -1,28 +1,68 @@
 package fleetmanagementapi;
 
-import fleetmanagementapi.service.TaxisService;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.reactive.server.WebTestClient;
 
-
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class FleetManagementApiApplicationTests {
 
+	@LocalServerPort
+	private int port;
+
 	@Autowired
-	private MockMvc mockMvc;
+	private WebTestClient webTestClient;
 
-	@MockBean
-	private TaxisService taxisService;
+	@Test
+	@DisplayName("Probar getAllTaxis")
+	void testGetAllTaxis() {
+		webTestClient.get()
+				.uri("/?page=1&limit=10")
+				.accept(MediaType.APPLICATION_JSON)
+				.exchange()
+				.expectStatus().isOk()
+				.expectBody()
+				.jsonPath("$.content").isArray();
+	}
 
-	//@BeforeEach
+	@Test
+	@DisplayName("Probar getTaxisId")
+	void testGetTaxisId() {
+		webTestClient.get()
+				.uri("/15")
+				.accept(MediaType.APPLICATION_JSON)
+				.exchange()
+				.expectStatus().isOk()
+				.expectBody()
+				.jsonPath("$.id").isEqualTo(15);
+	}
 
+	@Test
+	@DisplayName("Probar searchTaxis")
+	void searchTaxis() {
+		webTestClient.get()
+				.uri("/search?partialPlate=7&page=1&limit=10")
+				.accept(MediaType.APPLICATION_JSON)
+				.exchange()
+				.expectStatus().isOk()
+				.expectBody()
+				.jsonPath("$.content").isArray()
+				.jsonPath("$.content.length()").isEqualTo(10);
+	}
 
-	//@Test
-
+	@Test
+	@DisplayName("Probar que NotFoundException es lanzada")
+	void testNotFoundException() {
+		webTestClient.get()
+				.uri("/?page=100&limit=10")
+				.accept(MediaType.APPLICATION_JSON)
+				.exchange()
+				.expectStatus().isNotFound()
+				.expectBody()
+				.jsonPath("$.message").isEqualTo("This number of page doesn't exist: 100");
+	}
 }

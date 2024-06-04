@@ -11,7 +11,6 @@ import java.util.List;
 
 @Repository
 public interface TaxisRepository extends JpaRepository<Taxis, Integer> {
-    List<Taxis> findAllByPlate(String taxisPlate);
     Page<Taxis> findAll(Pageable pageable);
     @Query("SELECT t FROM Taxis t WHERE LOWER(t.plate) LIKE LOWER(CONCAT('%', :partialPlate,'%'))")
     Page<Taxis> findPlateContain(@Param("partialPlate") String partialPlate, Pageable pageable);

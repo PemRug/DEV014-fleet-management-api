@@ -12,8 +12,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
-import java.util.List;
-
 @Service
 public class TaxisServiceImpl implements TaxisService {
 
@@ -32,15 +30,12 @@ public class TaxisServiceImpl implements TaxisService {
     }
 
     @Override
-    public List<Taxis> getTaxisPlate(String plate) {
-        List<Taxis> taxisList = taxisRepository.findAllByPlate(plate);
-        return taxisList;
-    }
-
-    @Override
     public Page<Taxis> getAllTaxis(int page, int limit) {
         PageRequest pageable = PageRequest.of(page,limit);
         Page<Taxis> taxisPage = taxisRepository.findAll(pageable);
+        if (taxisPage.isEmpty() && page > 0) {
+            throw new NotFoundException("This number of page doesn't exist: " + page);
+        }
         return taxisPage;
     }
 

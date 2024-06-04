@@ -2,6 +2,7 @@ package fleetmanagementapi.controllers;
 
 
 import fleetmanagementapi.entity.Taxis;
+import fleetmanagementapi.exception.NotFoundException;
 import fleetmanagementapi.service.TaxisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -27,13 +28,6 @@ public class TaxisController {
     @GetMapping("/{id}")
     public ResponseEntity<Taxis> getTaxisId(@PathVariable("id") Integer taxisId) {
         Taxis taxisDto = taxisService.getTaxisId(taxisId);
-        return ResponseEntity.ok(taxisDto);
-    }
-
-    @GetMapping("/plate/{plate}")
-    public ResponseEntity<List<Taxis>> getTaxisPlate(
-            @PathVariable("plate") String taxisPlate) {
-        List<Taxis> taxisDto = taxisService.getTaxisPlate(taxisPlate);
         return ResponseEntity.ok(taxisDto);
     }
 
