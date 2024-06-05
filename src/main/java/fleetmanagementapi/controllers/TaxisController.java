@@ -2,7 +2,6 @@ package fleetmanagementapi.controllers;
 
 
 import fleetmanagementapi.entity.Taxis;
-import fleetmanagementapi.exception.NotFoundException;
 import fleetmanagementapi.service.TaxisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
