@@ -2,7 +2,8 @@ package fleetmanagementapi.entity;
 
 import jakarta.persistence.*;
 
-import java.sql.Timestamp;
+import java.sql.Date;
+
 
     @Entity
     @Table(name= "trajectories")  // Mapea esta clase a la tabla "trajectories"
@@ -16,7 +17,7 @@ import java.sql.Timestamp;
         private Integer taxiId;
 
         @Column(name = "date")
-        private Timestamp date;
+        private Date date;
 
         @Column(name = "latitude")
         private Double latitude;
@@ -24,6 +25,7 @@ import java.sql.Timestamp;
         @Column(name = "longitude")
         private Double longitude;
 
+        // Getters and setters
         public Integer getId() {
             return id;
         }
@@ -39,21 +41,27 @@ import java.sql.Timestamp;
         public void setTaxiId(Integer taxiId) {
             this.taxiId = taxiId;
         }
-        public Timestamp getDate() {
+
+        public Date getDate() {
             return date;
         }
-        public  void setDate(Timestamp date) {
+
+        public void setDate(Date date) {
             this.date = date;
         }
+
         public Double getLatitude() {
             return latitude;
         }
+
         public void setLatitude(Double latitude) {
             this.latitude = latitude;
         }
+
         public Double getLongitude() {
             return longitude;
         }
+
         public void setLongitude(Double longitude) {
             this.longitude = longitude;
         }
