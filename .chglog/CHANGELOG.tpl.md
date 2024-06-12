@@ -1,56 +1,28 @@
-{{ if .Versions -}}
-<a name="unreleased"></a>
-## [Unreleased]
+<a name="1.0.0"></a>
+## 1.0.0 - 2024-06-12
 
-{{ if .Unreleased.CommitGroups -}}
-{{ range .Unreleased.CommitGroups -}}
-### {{ .Title }}
-{{ range .Commits -}}
-- {{ if .Scope }}**{{ .Scope }}:** {{ end }}{{ .Subject }}
-{{ end }}
-{{ end -}}
-{{ end -}}
-{{ end -}}
+### Added
+- **HU3:** Test for HU3
+- **HU3:** Functional refactoring and changelog update without tests
+- **HU3:** Initial creation for Trajectories endpoint, query not yet resolved
 
-{{ range .Versions }}
-<a name="{{ .Tag.Name }}"></a>
-## {{ if .Tag.Previous }}[{{ .Tag.Name }}]{{ else }}{{ .Tag.Name }}{{ end }} - {{ datetime "2006-01-02" .Tag.Date }}
-{{ range .CommitGroups -}}
-### {{ .Title }}
-{{ range .Commits -}}
-- {{ if .Scope }}**{{ .Scope }}:** {{ end }}{{ .Subject }}
-{{ end }}
-{{ end -}}
+### Changed
+- **HU2:** Test for HU2
+- **HU2:** Pageable HU2
 
-{{- if .RevertCommits -}}
-### Reverts
-{{ range .RevertCommits -}}
-- {{ .Revert.Header }}
-{{ end }}
-{{ end -}}
+### Fixed
 
-{{- if .MergeCommits -}}
-### Pull Requests
-{{ range .MergeCommits -}}
-- {{ .Header }}
-{{ end }}
-{{ end -}}
+- Removed Mapper, Lombok, manual getter/setter, added query for partial plate, queries succeeded
 
-{{- if .NoteGroups -}}
-{{ range .NoteGroups -}}
-### {{ .Title }}
-{{ range .Notes }}
-{{ .Body }}
-{{ end }}
-{{ end -}}
-{{ end -}}
-{{ end -}}
+### Documentation
+- Swagger and initial test attempt
+- Readme
 
-{{- if .Versions }}
-[Unreleased]: {{ .Info.RepositoryURL }}/compare/{{ $latest := index .Versions 0 }}{{ $latest.Tag.Name }}...HEAD
-{{ range .Versions -}}
-{{ if .Tag.Previous -}}
-[{{ .Tag.Name }}]: {{ $.Info.RepositoryURL }}/compare/{{ .Tag.Previous.Name }}...{{ .Tag.Name }}
-{{ end -}}
-{{ end -}}
-{{ end -}}
+### Initial Commit
+- Git init
+
+### Miscellaneous
+- Endpoint getter by plate without pagination or limit
+- Entity, repository, mapper, service, controller creation
+
+[Unreleased]: https://github.com/PemRug/DEV014-fleet-management-api/tree/main/src
