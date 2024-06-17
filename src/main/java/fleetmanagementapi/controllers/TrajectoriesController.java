@@ -1,6 +1,7 @@
 package fleetmanagementapi.controllers;
 
 import fleetmanagementapi.dto.TrajectoriesDto;
+import fleetmanagementapi.entity.Taxis;
 import fleetmanagementapi.entity.Trajectories;
 import org.springframework.http.ResponseEntity;
 import fleetmanagementapi.service.TrajectoriesService;

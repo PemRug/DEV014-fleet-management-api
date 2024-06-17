@@ -4,7 +4,7 @@ import java.sql.Date;
 
 public class TrajectoriesDto {
     private Integer id;
-    private Integer taxiId;
+    private TaxisDto taxi;
     private Date date;
     private Double latitude;
     private Double longitude;
@@ -18,12 +18,12 @@ public class TrajectoriesDto {
         this.id = id;
     }
 
-    public Integer getTaxiId() {
-        return taxiId;
+    public TaxisDto getTaxi() {
+        return taxi;
     }
 
-    public void setTaxiId(Integer taxiId) {
-        this.taxiId = taxiId;
+    public void setTaxi(TaxisDto taxi) {
+        this.taxi = taxi;
     }
 
     public Date getDate() {

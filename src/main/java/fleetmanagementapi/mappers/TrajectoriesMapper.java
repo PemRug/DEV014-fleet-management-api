@@ -13,14 +13,16 @@ public class TrajectoriesMapper {
 
     @Autowired
     private TrajectoriesRepository trajectoriesRepository;
-
+    @Autowired
+    private TaxisMapper taxisMapper;
     @Autowired
     private TaxisRepository taxisRepository;
+
 
     public TrajectoriesDto toDto(Trajectories trajectories) {
         TrajectoriesDto dto = new TrajectoriesDto();
         dto.setId(trajectories.getId());
-        dto.setTaxiId(trajectories.getTaxiId());
+        dto.setTaxi(taxisMapper.mapToTaxisDto(trajectories.getTaxi())); // Utiliza el TaxisMapper para convertir Taxis a TaxisDto
         dto.setDate(trajectories.getDate());
         dto.setLatitude(trajectories.getLatitude());
         dto.setLongitude(trajectories.getLongitude());
@@ -30,7 +32,7 @@ public class TrajectoriesMapper {
     public Trajectories toEntity(TrajectoriesDto dto) {
         Trajectories trajectories = new Trajectories();
         trajectories.setId(dto.getId());
-        trajectories.setTaxiId(dto.getTaxiId());
+        trajectories.setTaxi(taxisMapper.mapToTaxisEntity(dto.getTaxi())); // Utiliza el TaxisMapper para convertir TaxisDto a Taxis
         trajectories.setDate(dto.getDate());
         trajectories.setLatitude(dto.getLatitude());
         trajectories.setLongitude(dto.getLongitude());

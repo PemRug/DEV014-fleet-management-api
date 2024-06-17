@@ -13,8 +13,9 @@ import java.sql.Date;
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Integer id;
 
-        @Column(name = "taxi_id")
-        private Integer taxiId;
+        @ManyToOne
+        @JoinColumn(name = "taxi_id", referencedColumnName = "id", nullable = false)
+        private Taxis taxi;
 
         @Column(name = "date")
         private Date date;
@@ -34,12 +35,12 @@ import java.sql.Date;
             this.id = id;
         }
 
-        public Integer getTaxiId() {
-            return taxiId;
+        public Taxis getTaxi() {
+            return taxi;
         }
 
-        public void setTaxiId(Integer taxiId) {
-            this.taxiId = taxiId;
+        public void setTaxi(Taxis taxi) {
+            this.taxi = taxi;
         }
 
         public Date getDate() {
