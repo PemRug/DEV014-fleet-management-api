@@ -1,10 +1,13 @@
 package fleetmanagementapi.dto;
 
-import java.sql.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 public class TrajectoriesDto {
     private Integer id;
     private TaxisDto taxi;
+    private String plate;
     private Date date;
     private Double latitude;
     private Double longitude;
@@ -26,14 +29,6 @@ public class TrajectoriesDto {
         this.taxi = taxi;
     }
 
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
     public Double getLatitude() {
         return latitude;
     }
@@ -48,6 +43,18 @@ public class TrajectoriesDto {
 
     public void setLongitude(Double longitude) {
         this.longitude = longitude;
+    }
+
+    public String getPlate() { return plate;}
+
+    public void setPlate(String plate) {this.plate = plate; }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 }
 

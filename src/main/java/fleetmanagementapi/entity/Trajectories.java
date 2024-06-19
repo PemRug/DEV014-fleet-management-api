@@ -2,10 +2,11 @@ package fleetmanagementapi.entity;
 
 import jakarta.persistence.*;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 
-    @Entity
+@Entity
     @Table(name= "trajectories")  // Mapea esta clase a la tabla "trajectories"
     public class Trajectories {
 
@@ -19,6 +20,7 @@ import java.sql.Date;
 
         @Column(name = "date")
         private Date date;
+
 
         @Column(name = "latitude")
         private Double latitude;
@@ -66,6 +68,6 @@ import java.sql.Date;
         public void setLongitude(Double longitude) {
             this.longitude = longitude;
         }
-    }
+}
 
 

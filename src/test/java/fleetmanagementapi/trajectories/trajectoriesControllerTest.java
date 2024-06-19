@@ -31,5 +31,21 @@ public class trajectoriesControllerTest {
                 .jsonPath("$[0].date").isEqualTo("2008-02-02")
                 .jsonPath("$.length()").isEqualTo(10);
     }
+
+    @Test
+    @DisplayName("Test getLastTrajectories")
+    void testGetLastTrajectories() {
+        webTestClient.get()
+                .uri("/api/trajectories/latest")
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody()
+                .jsonPath("$").isArray()
+                .jsonPath("$[0].taxi").exists()
+                .jsonPath("$[0].plate").exists()
+                .jsonPath("$[0].date").exists()
+                .jsonPath("$[0].latitude").exists()
+                .jsonPath("$[0].longitude").exists();
+    }
 }
-/*Agregar test y nuevas excepciones en los test*/
