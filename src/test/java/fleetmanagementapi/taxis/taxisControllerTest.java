@@ -1,5 +1,6 @@
 package fleetmanagementapi.taxis;
 
+import fleetmanagementapi.FleetManagementApiApplication;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +9,7 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(classes = FleetManagementApiApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class taxisControllerTest {
 
     @LocalServerPort
@@ -21,12 +22,14 @@ public class taxisControllerTest {
     @DisplayName("Probar getAllTaxis")
     void testGetAllTaxis() {
         webTestClient.get()
-                .uri("/?page=1&limit=10")
+                .uri("/taxis?page=1&limit=10")
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody()
-                .jsonPath("$.content").isArray();
+                .jsonPath("$.content").isArray()
+                .jsonPath("$.content[0].id").exists()
+                .jsonPath("$.content[0].plate").exists();
     }
 
     @Test

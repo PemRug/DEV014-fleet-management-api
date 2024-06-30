@@ -1,5 +1,6 @@
 package fleetmanagementapi.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -13,6 +14,7 @@ public class Taxis {
     @Column(name = "plate")
     private String plate;
     @OneToMany(mappedBy = "taxi", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonBackReference
     private List<Trajectories> trajectories;
 
 

@@ -30,7 +30,7 @@ public class TaxisController {
         return ResponseEntity.ok(taxisDto);
     }
 
-    @GetMapping
+    @GetMapping("/taxis")
     public Page<Taxis> getAllTaxis (
             @RequestParam (defaultValue = "0") int page,
             @RequestParam (defaultValue = "10") int limit) {

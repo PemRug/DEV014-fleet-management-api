@@ -2,6 +2,8 @@
 ## 1.0.0 - 2024-06-12
 
 ### Added
+- **HU4:** Functional, dates corrected and test
+- **HU4:** Progress in HU4
 - **HU3:** Test for HU3
 - **HU3:** Functional refactoring and changelog update without tests
 - **HU3:** Initial creation for Trajectories endpoint, query not yet resolved

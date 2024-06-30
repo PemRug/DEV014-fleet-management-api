@@ -1,5 +1,6 @@
 package fleetmanagementapi.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -13,26 +14,20 @@ import java.util.Date;
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Integer id;
-
         @ManyToOne
+        @JsonBackReference
         @JoinColumn(name = "taxi_id", referencedColumnName = "id", nullable = false)
         private Taxis taxi;
-
         @Column(name = "date")
         private Date date;
-
-
         @Column(name = "latitude")
         private Double latitude;
-
         @Column(name = "longitude")
         private Double longitude;
-
         // Getters and setters
         public Integer getId() {
             return id;
         }
-
         public void setId(Integer id) {
             this.id = id;
         }
