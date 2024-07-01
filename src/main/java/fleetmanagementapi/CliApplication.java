@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.util.Arrays;
 
-@SpringBootApplication
+//@SpringBootApplication
 public class CliApplication implements CommandLineRunner {
 
     @Autowired
