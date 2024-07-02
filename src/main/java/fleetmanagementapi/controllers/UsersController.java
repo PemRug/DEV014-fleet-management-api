@@ -1,13 +1,18 @@
 package fleetmanagementapi.controllers;
 
+import fleetmanagementapi.dto.UsersDto;
 import fleetmanagementapi.entity.Users;
 import fleetmanagementapi.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/users")
@@ -17,31 +22,39 @@ public class UsersController {
     private UsersService usersService;
 
     @PostMapping
-    public ResponseEntity<Users> createUsers(
-            @RequestBody Users user) {
-        Users createdUser = usersService.createUsers(user);
-        return ResponseEntity.ok(createdUser);
+    public ResponseEntity<?> createUsers(
+            @RequestBody UsersDto usersDto) {
+        try {
+            UsersDto createdUser = usersService.createUsers(usersDto);
+            return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
+        } catch (IllegalArgumentException e) {
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+        }
     }
-
     @GetMapping
-    public ResponseEntity<Page<Users>> getAllUsers(
+    public ResponseEntity<Page<UsersDto>> getAllUsers(
             @RequestParam (defaultValue = "0") int page,
             @RequestParam (defaultValue = "10") int limit) {
         Pageable pageable = PageRequest.of(page, limit);
-        Page<Users> users = usersService.getAllUsers(pageable);
-        return ResponseEntity.ok(users);
+        Page<UsersDto> usersDtos = usersService.getAllUsers(pageable);
+        return new ResponseEntity<>(usersDtos, HttpStatus.OK);
     }
 
     @DeleteMapping("/{email}")
-    public ResponseEntity<Void> deleteUser(
-            @PathVariable String email) {
-        usersService.deleteUser(email);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<Void> deleteUser(@PathVariable String email) {
+        try {
+            usersService.deleteUser(email);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
-    @PutMapping("/{email}")
-    public ResponseEntity<Users> updateUser(@PathVariable String email, @RequestBody Users userDetail) {
-        Users updatedUser = usersService.updateUser(email, userDetail);
-        return ResponseEntity.ok(updatedUser);
+    @PutMapping("/{identifier}")
+    public ResponseEntity<UsersDto> updateUser(@PathVariable String identifier, @RequestBody UsersDto usersDto) {
+        UsersDto updatedUser = usersService.updateUser(identifier, usersDto);
+        return new ResponseEntity<>(updatedUser, HttpStatus.OK);
     }
 }

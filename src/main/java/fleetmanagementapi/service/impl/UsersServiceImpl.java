@@ -41,40 +41,25 @@ public class UsersServiceImpl implements UsersService {
         Page<Users> usersPage = usersRepository.findAll(pageable);
         return usersPage.map(usersMapper::mapToUsersDto);
     }
-// Necesita hacer cambios, porque debe permitir find por email o nombre, pero no cambiar ni email ni password.
+
     @Override
-    public UsersDto updateUser(String email, UsersDto usersDto) {
-        Optional<Users> usersChange = usersRepository.findByEmail(email);
-        if (usersChange.isPresent()) {
-            Users existingUser = usersChange.get();
+    public UsersDto updateUser(String identifier, UsersDto usersDto) {
+        Users existingUser = usersRepository.findByEmailOrName(identifier, identifier)
+                .orElseThrow(()-> new IllegalArgumentException("Usuario no encontrado"));
 
-            if(!existingUser.getEmail().equals(usersDto.getEmail())) {
-                Optional<Users> existingUserByEmail = usersRepository.findByEmail(usersDto.getEmail());
-                if (existingUserByEmail.isPresent()) {
-                    throw new IllegalArgumentException("Este email ya existe.");
-                }
-            }
-            if (!existingUser.getName().equals(usersDto.getName())) {
-                Optional<Users> existingUserByName = usersRepository.findByName(usersDto.getName());
-                if (existingUserByName.isPresent()) {
-                    throw new IllegalArgumentException("Ya existe un usuario con el mismo nombre.");
-                }
-            }
-
-
-            existingUser.setName(usersDto.getName());
-            existingUser.setEmail(usersDto.getEmail());
-            existingUser.setPassword(usersDto.getPassword());
-            usersRepository.save(existingUser);
-            return usersMapper.mapToUsersDto(existingUser);
+        if (!existingUser.getEmail().equals(usersDto.getEmail())) {
+            throw new IllegalArgumentException("No se puede modificar el email, regístrate nuevamente.");
         }
-        return null;
+
+        existingUser.setName(usersDto.getName());
+        existingUser = usersRepository.save(existingUser);
+        return usersMapper.mapToUsersDto(existingUser);
     }
 
     @Override
     public void deleteUser(String email) {
-        Users user = usersRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-        usersRepository.delete(user);
+        Users existingUser = usersRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado:" + email));
+        usersRepository.delete(existingUser);
     }
 }
