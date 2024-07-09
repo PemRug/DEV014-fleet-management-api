@@ -2,6 +2,7 @@ package fleetmanagementapi.controllers;
 
 import fleetmanagementapi.dto.LoginResponse;
 import fleetmanagementapi.dto.LoginUserDto;
+import fleetmanagementapi.dto.LoginUserResponse;
 import fleetmanagementapi.dto.RegisterUserDto;
 import fleetmanagementapi.entity.Users;
 import fleetmanagementapi.service.impl.AuthenticationService;
@@ -26,6 +27,7 @@ public class AuthenticationController {
     @PostMapping("/signup")
     public ResponseEntity<Users> register(@RequestBody RegisterUserDto registerUserDto) {
         Users registeredUser = authenticationService.signup(registerUserDto);
+        LoginUserResponse userResponse = new LoginUserResponse(registeredUser.getIduser(), registeredUser.getEmail());
         return ResponseEntity.ok(registeredUser);
     }
 
@@ -34,10 +36,11 @@ public class AuthenticationController {
         Users authenticatedUser = authenticationService.authenticate(loginUserDto);
         String jwtToken = jwtService.generateToken(authenticatedUser);
 
-        // Create LoginResponse with JWT token and expiration time
+
         LoginResponse loginResponse = new LoginResponse();
         loginResponse.setAccessToken(jwtToken);
         loginResponse.setExpiresIn(jwtService.getExpirationTime());
+
 
         return ResponseEntity.ok(loginResponse);
     }
