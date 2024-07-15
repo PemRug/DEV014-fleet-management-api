@@ -107,16 +107,13 @@ public class TrajectoriesServiceImpl implements TrajectoriesService {
                                     saveBatch(batch);
                                 }
                             } catch (NumberFormatException | ParseException e) {
-                                // Log the exception or handle it as per your application's error handling strategy
                                 e.printStackTrace();
-                                // You can also log the problematic line here to identify specific data issues
                                 System.err.println("Error processing line: " + line);
                             }
                         }
                     }
                 }
 
-                // Save any remaining trajectories in batch
                 if (!batch.isEmpty()) {
                     saveBatch(batch);
                 }

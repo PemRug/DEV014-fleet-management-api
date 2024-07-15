@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Bean;
 
 import java.util.Arrays;
 
-@SpringBootApplication
+//@SpringBootApplication
 public class CliApplication implements CommandLineRunner {
 
     @Autowired
