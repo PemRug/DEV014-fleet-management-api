@@ -1,33 +1,73 @@
 package fleetmanagementapi.authenticationFilter;
-
-
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import fleetmanagementapi.controllers.AuthenticationController;
+import fleetmanagementapi.dto.LoginUserDto;
+import fleetmanagementapi.entity.Users;
+import fleetmanagementapi.service.impl.AuthenticationService;
+import fleetmanagementapi.service.impl.JwtServiceImpl;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-
-@SpringBootTest
-@AutoConfigureMockMvc
+@ExtendWith(SpringExtension.class)
+@WebMvcTest(AuthenticationController.class)
 public class JwtAuthenticationFilterIntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;
 
-    @Test
-    public void testValidToken() throws Exception {
-        String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsImlhdCI6MTcyMDQ3MTkzNCwiZXhwIjoxNzIwNDc1NTM0fQ.ScR6zY7ZrDAagujkgBYcGXziRsL5l4iNs48TbA2GB0g";
+    @MockBean
+    private AuthenticationService authenticationService;
 
-        mockMvc.perform(get("/api/test")
-                        .header("Authorization", "Bearer " + token))
-                .andExpect(status().isInternalServerError())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.status").value(500))
-                .andExpect(jsonPath("$.title").value("Internal Server Error"))
-                .andExpect(jsonPath("$.detail").value("Usuario no encontrado"));
+    @MockBean
+    private JwtServiceImpl jwtService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Test
+    public void testAuthenticationWithoutToken() throws Exception {
+        LoginUserDto loginUserDto = new LoginUserDto();
+        loginUserDto.setEmail("fleetmanagementexport@gmail.com");
+        loginUserDto.setPassword("FleetManagement2024");
+
+        Users authenticatedUser = new Users();
+        authenticatedUser.setEmail(loginUserDto.getEmail());
+        authenticatedUser.setPassword(passwordEncoder.encode(loginUserDto.getPassword()));
+
+        Mockito.when(authenticationService.authenticate(Mockito.any(LoginUserDto.class)))
+                .thenReturn(authenticatedUser);
+
+        mockMvc.perform(post("/auth/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(loginUserDto)))
+                .andExpect(status().isForbidden()); // Expecting HTTP 403 Forbidden
+    }
+
+    private String asJsonString(Object obj) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.writeValueAsString(obj);
+    }
+
+    @TestConfiguration
+    static class TestConfig {
+        @Bean
+        public PasswordEncoder passwordEncoder() {
+            return new BCryptPasswordEncoder();
+        }
     }
 }
