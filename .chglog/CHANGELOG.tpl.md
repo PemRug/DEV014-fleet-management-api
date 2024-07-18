@@ -45,26 +45,16 @@
 - Endpoint getter by plate without pagination or limit
 - Entity, repository, mapper, service, controller creation
 
-[Unreleased]: https://github.com/PemRug/DEV014-fleet-management-api/tree/main/src
-~\Laboratoria\FLEET MANAGEMENT\fleet-management-api git:[Crud]
-git checkout Jwt
-Switched to branch 'Jwt'
-~\Laboratoria\FLEET MANAGEMENT\fleet-management-api git:[Jwt]
-git log
-commit ac1399e72e042b77ec7b09e9ce6573b15d9f71b2 (HEAD -> Jwt, origin/Jwt)
-Author: PemRug <paolamejia955@gmail.com>
-Date:   Tue Jul 2 17:45:10 2024 -0500
-
-    Estructura de Autorización sin resolver 403
-
-commit d3177e8782056bd6958ead9f988660b03e0c0ccd (HEAD -> Crud, origin/Crud)
-Author: PemRug <paolamejia955@gmail.com>
-Date:   Tue Jul 2 14:27:46 2024 -0500
-
-    Users controller test
-
-commit 34827872f2d9c5f77bc2f973e9fae22db30b1fb2
-Author: PemRug <paolamejia955@gmail.com>
-Date:   Tue Jul 2 10:59:43 2024 -0500
-
-    Updateuser corregido, permite actualizar solo name y createUser corregido, no permite crear 2 usuarios con el mismo nombre o email
+### Commits
+- **5d2fd47:** Readme, correccion test
+- **994dfd1:** Cambios en application properties y optimizacion
+- **8c9a0ff:** Configurar el Cli y la Api Rest para coexistir en el mismo proyecto
+- **0bdeeb9:** Export and Send Email and test of filter authentication
+- **ac1399e:** Estructura de Autorización sin resover 403
+- **d3177e8:** Users controller test
+- **3482787:** Updateuser corregido, permite actualizar solo name y createUser corregido, no permite crear 2 usuarios con el mismo nombre o email
+- **2611d5c:** Crud get ok, post recien cambiado para que no me permita crear usuarios con el mismo mail, Modificar aun por ajustar y delete por revisar
+- **824049d:** HU4 funcional, fechas corregidas y test
+- **04fa991:** HU4 funcional, fechas corregidas y test
+- **755ab46:** Merge branch 'HU4' of https://github.com/PemRug/DEV014-fleet-management-api into HU4
+- **45fdab8:** Test de HU3 en rama HU4
